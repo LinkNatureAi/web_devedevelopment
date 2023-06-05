@@ -1,22 +1,22 @@
-fix and shorter unnecessary remove modify
 const express = require('express');
 const request = require('request');
 const cheerio = require('cheerio');
 
 const app = express();
 
-app.get('/', (req, res) => {
-  request.get('https://runningstatus.in/status/06619', (error, response, body) => {
-    if (response.statusCode === 200) {
+app.get('/:num', (req, res) => {
+  const num = req.params.num; // Get the value of 'num' from the request parameters
+
+  request.get(`https://runningstatus.in/status/${num}`, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
       const $ = cheerio.load(body);
+      const trainName = $('.table-success').text().trim(); // Trim whitespace from trainName
       const data = {
-        // Modify the following lines to extract the desired data from the HTML
-        // For example, let's assume we want to extract the train name
-        trainName: $('.table-success').text()
+        trainName: trainName
       };
       res.json(data);
     } else {
-      res.status(response.statusCode).send('Error retrieving data');
+      res.status(500).send('Error retrieving data'); // Use a generic 500 status code for any error
     }
   });
 });
