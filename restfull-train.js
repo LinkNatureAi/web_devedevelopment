@@ -3,22 +3,25 @@ const request = require('request');
 const cheerio = require('cheerio');
 
 const app = express();
+const PORT = 3330;
 
 app.get('/:num', (req, res) => {
-  const num = req.params.num; // Get the value of 'num' from the request parameters
+  const num = req.params.num;
 
   request.get(`https://runningstatus.in/status/${num}`, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const $ = cheerio.load(body);
-      const trainName = $('.table-success').text().trim(); // Trim whitespace from trainName
+      const trainName = $('head').text().replace('Live Train Running Status', '').trim();
+      const currentStation = $('.table-success').text().trim();
       const data = {
-        trainName: trainName
+        Name: trainName,
+        currentStation: currentStation
       };
       res.json(data);
     } else {
-      res.status(500).send('Error retrieving data'); // Use a generic 500 status code for any error
+      res.status(500).send('Error retrieving data');
     }
   });
 });
 
-app.listen(3330, () => console.log('Server started on port 3330'));
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
