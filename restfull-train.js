@@ -3,7 +3,7 @@ const request = require('request');
 const cheerio = require('cheerio');
 
 const app = express();
-const PORT = 3330;
+const port = process.env.PORT || 3330;
 
 app.get('/:num', (req, res) => {
   const num = req.params.num;
@@ -25,4 +25,4 @@ app.get('/:num', (req, res) => {
   });
 });
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.listen(port, () => console.log(`Server started on port ${port}`));
