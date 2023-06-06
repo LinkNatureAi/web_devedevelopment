@@ -7,7 +7,7 @@ const PORT = 3330;
 
 app.get('/:num', (req, res) => {
   const num = req.params.num;
-
+//          https://spotyourtrain.com/trainstatus?train=${num}         
   request.get(`https://runningstatus.in/status/${num}`, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const $ = cheerio.load(body);
