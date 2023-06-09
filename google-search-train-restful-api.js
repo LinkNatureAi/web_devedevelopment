@@ -28,9 +28,9 @@ app.listen(port, () => {
 
 function modifyJSON(data) {
   const $ = cheerio.load(data);
-  const trainName = $('div.k9rLYb').text().trim();
-  const station = $('div.dK1Bub .rUtx7d').eq(1).text().trim();
-  const time = $('div.Rjvkvf.MB86Dc').eq(1).text().trim();
+  const trainName = $('div.k9rLYb').eq(0).text().trim();
+  const liveStatus = $('div.dK1Bub .rUtx7d').eq(1).text();//.replace('Est arrival', 'pahuch ne wali').replace('Est departure', 'pahuchi thi');
+  const delayTime = $('div.Rjvkvf.MB86Dc').eq(1).text().trim();
   
-  return { trainName, station, time };
+  return { trainName, liveStatus, delayTime };
 }
